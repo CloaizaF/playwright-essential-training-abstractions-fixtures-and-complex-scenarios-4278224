@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { randomState } from "../../lib/helpers/states";
 
 test.describe("Checkout challenge", async () => {
   test.use({ storageState: ".auth/customer01.json" });
@@ -15,12 +16,12 @@ test.describe("Checkout challenge", async () => {
     await page.getByTestId("proceed-1").click();
     await page.getByTestId("proceed-2").click();
     await expect(
-      page.locator(".step-indicator").filter({ hasText: "2" })
+      page.locator(".step-indicator").filter({ hasText: "2" }),
     ).toHaveCSS("background-color", "rgb(51, 153, 51)");
     await page.getByTestId("street").fill("123 Testing Way");
     await page.getByTestId("city").fill("Sacramento");
-    await page.getByTestId("state").fill("California");
-    await page.getByTestId("country").fill("USA");
+    await page.getByTestId("state").fill(randomState());
+    await page.getByTestId("country").selectOption("US");
     await page.getByTestId("postal_code").fill("98765");
     await page.getByTestId("proceed-3").click();
     await expect(page.getByTestId("finish")).toBeDisabled();
@@ -30,7 +31,7 @@ test.describe("Checkout challenge", async () => {
       .selectOption("6 Monthly Installments");
     await page.getByTestId("finish").click();
     await expect(page.locator(".help-block")).toHaveText(
-      "Payment was successful"
+      "Payment was successful",
     );
     headless
       ? await test.step("visual test", async () => {
