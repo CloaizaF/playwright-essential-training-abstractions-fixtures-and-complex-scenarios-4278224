@@ -4,7 +4,7 @@ test.describe("Api challenge", () => {
   test("GET /products/{id}", async ({ request }) => {
     const apiUrl = "https://api.practicesoftwaretesting.com";
     const getProductResponse = await request.get(
-      apiUrl + "/products/search?q=thor%20hammer"
+      apiUrl + "/products/search?q=thor%20hammer",
     );
     expect(getProductResponse.status()).toBe(200);
     const productBody = await getProductResponse.json();
@@ -20,5 +20,6 @@ test.describe("Api challenge", () => {
     expect(body.is_rental).toBe(false);
     expect(body.name).toBe("Thor Hammer");
     expect(body.price).toBe(11.14);
+    expect(body.price).toBeNumber();
   });
 });
